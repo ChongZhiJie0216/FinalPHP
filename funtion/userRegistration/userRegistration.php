@@ -8,18 +8,17 @@ $password = $_POST['password'];
 // Select the cpss database
 $conn->select_db($database);
 
-// Create the admin_account table if it doesn't exist
-$sql = "CREATE TABLE IF NOT EXISTS user_account (
-  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(30) NOT NULL,
-  password VARCHAR(30) NOT NULL
-)";
-if ($conn->query($sql) === FALSE) {
-  die("Error creating table: " . $conn->error);
+// Connect to the existing user_account table
+$sql = "SELECT * FROM user_account";
+$result = $conn->query($sql);
+
+// Check if the table exists
+if (!$result) {
+  die("Error connecting to table: " . $conn->error);
 }
 
-// Prepare the SQL statement to insert the user's registration information into the admin_account table
-$stmt = $conn->prepare("INSERT INTO admin_account (username, password) VALUES (?, ?)");
+// Prepare the SQL statement to insert the user's registration information into the user_account table
+$stmt = $conn->prepare("INSERT INTO user_account (username, password) VALUES (?, ?)");
 $stmt->bind_param("ss", $username, $password);
 
 // Execute the prepared statement

@@ -9,14 +9,8 @@ $password = $_POST['password'];
 $conn->select_db($database);
 
 // Create the admin_account table if it doesn't exist
-$sql = "CREATE TABLE IF NOT EXISTS admin_account (
-  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(30) NOT NULL,
-  password VARCHAR(30) NOT NULL
-)";
-if ($conn->query($sql) === FALSE) {
-  die("Error creating table: " . $conn->error);
-}
+$sql = "SELECT * FROM admin_account";
+$result = $conn->query($sql);
 
 // Prepare the SQL statement to insert the user's registration information into the admin_account table
 $stmt = $conn->prepare("INSERT INTO admin_account (username, password) VALUES (?, ?)");

@@ -67,7 +67,7 @@
 			header("Location: ./funtion/directpage.html"); // Replace with the actual direct page URL
 			exit;
 		} else {
-			echo '<form method="post" action="connect.php">
+			echo '<form method="post" action="creata_db&table.php">
 				<label for="host">Host:</label>
 				<input type="text" id="host" name="host" placeholder="localhost" />
 				<br /><br />
