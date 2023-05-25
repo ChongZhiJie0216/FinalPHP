@@ -41,6 +41,19 @@ if ($conn->query($sql) === FALSE) {
     die("Error creating user_account table: " . $conn->error);
 }
 
+// Create the student table if it doesn't exist
+$sql = "CREATE TABLE IF NOT EXISTS student (
+  stu_id INT(20),
+  stu_name VARCHAR(20),
+  stu_age INT,
+  stu_gender VARCHAR(10),
+  stu_address VARCHAR(50),
+  PRIMARY KEY (stu_id)
+)";
+if ($conn->query($sql) === FALSE) {
+  die("Error creating user_account table: " . $conn->error);
+}
+
 // Save the connection information to a config.php file
 $config = "<?php\n";
 $config .= "\$host = '" . $host . "';\n";
@@ -59,6 +72,6 @@ fclose($file);
 $conn->close();
 
 // Redirect the user to the adminRegistration.html file
-header("Location: ./funtion/adminRegistration/adminRegistration.html");
+header("Location: ./funtion/adminRegistration/index.php");
 exit();
 ?>

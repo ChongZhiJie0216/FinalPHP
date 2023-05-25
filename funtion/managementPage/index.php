@@ -2,6 +2,9 @@
 <html>
 
 <head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Management Page</title>
   <style>
     body {
@@ -75,6 +78,7 @@
       <h1>Student Management Page</h1>
       <div class="action-buttons">
         <button id="add-user-link" onclick="handleAddUserClick()">Add User</button>
+        <button id="add-admin-link" onclick="handleAddAdminClick()">Add Admin</button>
         <button id="logout-button" onclick="handleLogoutClick()">Logout</button>
       </div>
     </div>
@@ -84,13 +88,17 @@
       <input type="text" id="search-input" placeholder="Search...">
       <button id="search-button">Search</button>
     </div>
-    <!-- Rest of the page content goes here -->
   </main>
   <script>
+     function handleAddAdminClick() {
+      // Add your logic here to handle the "Add User" link click event
+      // For example, you can redirect to another PHP page using JavaScript:
+      window.location.href = "../adminRegistration/index.php";
+    }
     function handleAddUserClick() {
       // Add your logic here to handle the "Add User" link click event
-      // For example, you can redirect to another HTML page using JavaScript:
-      window.location.href = "../userRegistration/userRegistration.html";
+      // For example, you can redirect to another PHP page using JavaScript:
+      window.location.href = "../userRegistration/index.php";
     }
     function handleLogoutClick(){
       window.location.href ="../directpage.html";
