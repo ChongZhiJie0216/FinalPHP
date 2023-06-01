@@ -1,22 +1,3 @@
-<?php
-session_start();
-
-// Logout function
-function logout()
-{
-  // Destroy all session data
-  session_destroy();
-  setcookie('username', '', time() - 3600, '/');
-  // Redirect to the login page or any other appropriate page
-  header("Location: ../directpage.html");
-  exit();
-}
-
-// Handle logout request
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
-  logout();
-}
-?>
 <!DOCTYPE html>
 <html>
 
@@ -51,65 +32,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
   <main>
     <div class="search-container">
       <input type="text" id="search-input" placeholder="Search...">
-      <button id="search-button">Search</button>
+      <button id="search-button" onclick="handleSearchClick()">Search</button>
     </div>
   </main>
-  <?php
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
+  <div id="table-container">
+    <table border="1">
+      <tr>
+        <th width='100px'>学号</th>
+        <th width='100px'>年龄</th>
+        <th width='100px'>姓名</th>
+        <th width='100px'>性别</th>
+        <th width='750px'>户籍</th>
+      </tr>
+      <?php
+      include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
 
-  // SQL query to fetch student data
-  $sql = "SELECT stu_id AS 学号, stu_age AS 年龄, stu_name AS 姓名, stu_gender AS 性别, stu_address AS 户籍 FROM student";
-  $result = $conn->query($sql);
+      // SQL query to fetch student data
+      $sql = "SELECT stu_id AS 学号, stu_age AS 年龄, stu_name AS 姓名, stu_gender AS 性别, stu_address AS 户籍 FROM student";
+      $result = $conn->query($sql);
 
-  // Check if any rows were returned
-  if ($result->num_rows > 0) {
-    // Start creating the HTML table
-    echo "<table>";
-    echo "<td>";
-    echo "<table border = '1'>";
-    echo "<tr>";
-    echo "<th width='100px'>学号</th>";
-    echo "<th width='100px'>年龄</th>";
-    echo "<th width='100px'>姓名</th>";
-    echo "<th width='100px'>性别</th>";
-    echo "<th width='750px'>户籍</th>";
-    echo "</tr>";
+      // Check if any rows were returned
+      if ($result->num_rows > 0) {
+        // Loop through each row of data
+        while ($row = $result->fetch_assoc()) {
+          echo "<tr>";
+          echo "<td style='text-align: center;'>" . $row['学号'] . "</td>";
+          echo "<td style='text-align: center;'>" . $row['年龄'] . "</td>";
+          echo "<td style='text-align: center;'>" . $row['姓名'] . "</td>";
+          echo "<td style='text-align: center;'>" . $row['性别'] . "</td>";
+          echo "<td style='text-align: center;'>" . $row['户籍'] . "</td>";
+          echo "</tr>";
+        }
+      } else {
+        // No rows found
+        echo "<tr><td colspan='5'>No data found.</td></tr>";
+      }
 
-    // Loop through each row of data
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td style='text-align: center;'>" . $row['学号'] . "</td>";
-        echo "<td style='text-align: center;'>" . $row['年龄'] . "</td>";
-        echo "<td style='text-align: center;'>" . $row['姓名'] . "</td>";
-        echo "<td style='text-align: center;'>" . $row['性别'] . "</td>";
-        echo "<td style='text-align: center;'>" . $row['户籍'] . "</td>";
-        echo "</tr>";
-    }
-
-
-    // Close the table
-    echo "</table>";
-  } else {
-    // No rows found
-    echo "No data found.";
-  }
-
-  // Close the database connection
-  $conn->close();
-  ?>
+      // Close the database connection
+      $conn->close();
+      ?>
+    </table>
+  </div>
   <script>
-    function handleAddAdminClick() {
-      window.location.href = "../adminRegistration/index.php";
-    }
-
-    function handleAddUserClick() {
-      window.location.href = "../userRegistration/index.php";
-    }
-
     function handleLogoutClick() {
       var logoutForm = document.createElement("form");
       logoutForm.method = "post";
-      logoutForm.action = "";
+      logoutForm.action = "logout.php";
       var logoutInput = document.createElement("input");
       logoutInput.type = "hidden";
       logoutInput.name = "logout";
@@ -117,6 +85,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
       logoutForm.appendChild(logoutInput);
       document.body.appendChild(logoutForm);
       logoutForm.submit();
+    }
+
+    function handleSearchClick() {
+      var searchInput = document.getElementById("search-input").value;
+      var tableRows = document.getElementsByTagName("tr");
+
+      for (var i = 1; i < tableRows.length; i++) {
+        var cells = tableRows[i].getElementsByTagName("td");
+        var found = false;
+
+        for (var j = 0; j < cells.length; j++) {
+          var cellText = cells[j].textContent || cells[j].innerText;
+
+          if (cellText.toLowerCase().includes(searchInput.toLowerCase())) {
+            found = true;
+            break;
+          }
+        }
+
+        if (found) {
+          tableRows[i].style.display = "";
+        } else {
+          tableRows[i].style.display = "none";
+        }
+      }
     }
   </script>
   </center>

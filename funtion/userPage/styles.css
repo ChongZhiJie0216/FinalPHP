@@ -60,3 +60,7 @@ header {
 #search-button:hover {
   background-color: #006080;
 }  
+
+.table-container{
+  text-align: center;
+}
