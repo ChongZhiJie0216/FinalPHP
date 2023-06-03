@@ -74,6 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
       document.body.appendChild(logoutForm);
       logoutForm.submit();
     }
+
+    function handleAddStudentClick() {
+      window.location.href = "../addStudent/index.php";
+    }
   </script>
 </body>
 

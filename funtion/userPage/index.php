@@ -11,68 +11,72 @@
 
 <body>
   <center>
-  <header>
-    <div class="header-container">
-      <h1>
-        <?php
-        // Check if the "username" cookie is set
-        if (isset($_COOKIE['username'])) {
-          $loggedInUsername = $_COOKIE['username'];
+    <header>
+      <div class="header-container">
+        <h1>
+          <?php
+          // Check if the "username" cookie is set
+          if (isset($_COOKIE['username'])) {
+            $loggedInUsername = $_COOKIE['username'];
 
-          // Display the personalized welcome message
-          echo "Welcome, " . htmlspecialchars($loggedInUsername);
-        }
-        ?>
-      </h1>
-      <div class="action-buttons">
-        <button id="logout-button" onclick="handleLogoutClick()">Logout</button>
+            // Display the personalized welcome message
+            echo "Welcome, " . htmlspecialchars($loggedInUsername);
+          }
+          ?>
+        </h1>
+        <div class="action-buttons">
+          <button id="logout-button" onclick="handleLogoutClick()">Logout</button>
+        </div>
       </div>
-    </div>
-  </header>
-  <main>
-    <div class="search-container">
-      <input type="text" id="search-input" placeholder="Search...">
-      <button id="search-button" onclick="handleSearchClick()">Search</button>
-    </div>
-  </main>
-  <div id="table-container">
-    <table border="1">
-      <tr>
-        <th width='100px'>学号</th>
-        <th width='100px'>年龄</th>
-        <th width='100px'>姓名</th>
-        <th width='100px'>性别</th>
-        <th width='750px'>户籍</th>
-      </tr>
-      <?php
-      include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
+    </header>
+    <main>
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search...">
+        <button id="search-button" onclick="handleSearchClick()">Search</button>
+      </div>
+    </main>
+    <div id="table-container">
+      <table border="1">
+        <tr>
+          <th width="100px">学生照片</th>
+          <th width="100px">学号</th>
+          <th width="100px">年龄</th>
+          <th width="100px">姓名</th>
+          <th width="100px">性别</th>
+          <th width="750px">户籍</th>
+        </tr>
+        <?php
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
 
-      // SQL query to fetch student data
-      $sql = "SELECT stu_id AS 学号, stu_age AS 年龄, stu_name AS 姓名, stu_gender AS 性别, stu_address AS 户籍 FROM student";
-      $result = $conn->query($sql);
+        // SQL query to fetch student data
+        $sql = "SELECT stu_photo, stu_id, stu_age, stu_name, stu_gender, stu_address FROM student";
+        $result = $conn->query($sql);
 
-      // Check if any rows were returned
-      if ($result->num_rows > 0) {
-        // Loop through each row of data
-        while ($row = $result->fetch_assoc()) {
-          echo "<tr>";
-          echo "<td style='text-align: center;'>" . $row['学号'] . "</td>";
-          echo "<td style='text-align: center;'>" . $row['年龄'] . "</td>";
-          echo "<td style='text-align: center;'>" . $row['姓名'] . "</td>";
-          echo "<td style='text-align: center;'>" . $row['性别'] . "</td>";
-          echo "<td style='text-align: center;'>" . $row['户籍'] . "</td>";
-          echo "</tr>";
+        // Check if any rows were returned
+        if ($result->num_rows > 0) {
+          // Loop through each row of data
+          while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td style='text-align: center;'><img src='../addStudent/" . $row['stu_photo'] . "' alt='Student Photo' width='180px' height='196px'></td>";
+            echo "<td style='text-align: center;'>" . $row['stu_id'] . "</td>";
+            echo "<td style='text-align: center;'>" . $row['stu_age'] . "</td>";
+            echo "<td style='text-align: center;'>" . $row['stu_name'] . "</td>";
+            echo "<td style='text-align: center;'>" . $row['stu_gender'] . "</td>";
+            echo "<td style='text-align: center;'>" . $row['stu_address'] . "</td>";
+            echo "</tr>";
+          }
+        } else {
+          // No rows found
+          echo "<tr><td colspan='6'>No data found.</td></tr>";
         }
-      } else {
-        // No rows found
-        echo "<tr><td colspan='5'>No data found.</td></tr>";
-      }
 
-      // Close the database connection
-      $conn->close();
-      ?>
-    </table>
-  </div>
+        // Close the database connection
+        $conn->close();
+        ?>
+      </table>
+    </div>
+  </center>
+
   <script>
     function handleLogoutClick() {
       var logoutForm = document.createElement("form");
@@ -88,7 +92,7 @@
     }
 
     function handleSearchClick() {
-      var searchInput = document.getElementById("search-input").value;
+      var searchInput = document.getElementById("search-input").value.toLowerCase();
       var tableRows = document.getElementsByTagName("tr");
 
       for (var i = 1; i < tableRows.length; i++) {
@@ -98,7 +102,7 @@
         for (var j = 0; j < cells.length; j++) {
           var cellText = cells[j].textContent || cells[j].innerText;
 
-          if (cellText.toLowerCase().includes(searchInput.toLowerCase())) {
+          if (cellText.toLowerCase().includes(searchInput)) {
             found = true;
             break;
           }
@@ -112,7 +116,6 @@
       }
     }
   </script>
-  </center>
 </body>
 
 </html>
