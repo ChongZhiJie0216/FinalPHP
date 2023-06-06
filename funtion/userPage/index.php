@@ -15,11 +15,9 @@
       <div class="header-container">
         <h1>
           <?php
-          // Check if the "username" cookie is set
           if (isset($_COOKIE['username'])) {
             $loggedInUsername = $_COOKIE['username'];
 
-            // Display the personalized welcome message
             echo "Welcome, " . htmlspecialchars($loggedInUsername);
           }
           ?>
@@ -49,13 +47,10 @@
         <?php
         include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
 
-        // SQL query to fetch student data
         $sql = "SELECT stu_photo, stu_id, stu_age, stu_name, stu_gender, stu_address FROM student";
         $result = $conn->query($sql);
 
-        // Check if any rows were returned
         if ($result->num_rows > 0) {
-          // Loop through each row of data
           while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td style='text-align: center;'><img src='../addStudent/" . $row['stu_photo'] . "' alt='Student Photo' width='180px' height='196px'></td>";
@@ -68,11 +63,9 @@
             echo "</tr>";
           }
         } else {
-          // No rows found
           echo "<tr><td colspan='7'>No data found.</td></tr>";
         }
 
-        // Close the database connection
         $conn->close();
         ?>
       </table>

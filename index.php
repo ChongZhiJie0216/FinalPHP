@@ -61,10 +61,10 @@
 
 <body>
 	<center>
-		<h1>Connect to MariaDB</h1>
+		<h1>Connect to Your DB</h1>
 		<?php
 		if (file_exists("config.php")) {
-			header("Location: ./funtion/directpage.html"); // Replace with the actual direct page URL
+			header("Location: ./funtion/directpage.html");
 			exit;
 		} else {
 			echo '<form method="post" action="creata_db&table.php">

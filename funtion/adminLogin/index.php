@@ -7,29 +7,23 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
 
 $username = isset($_POST['username']) ? $_POST['username'] : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
-$message = ""; // Variable to store the error message
+$message = ""; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Prepare SQL statement
   $stmt = $conn->prepare("SELECT * FROM admin_account WHERE username = ? AND password = ?");
   $stmt->bind_param("ss", $username, $password);
   $stmt->execute();
   $result = $stmt->get_result();
 
-  // Check if a row was returned
   if ($result->num_rows == 1) {
-    // Login successful
-    // Set a cookie named "username" with the value of the logged-in username
-    cookieze("username", $username, 2592000, "/"); // Cookie expires in 30 days
+    cookieze("username", $username, 2592000, "/");
 
     header("Location: ../managementPage/index.php");
     exit;
   } else {
-    // Login failed
     $message = "Invalid username or password";
   }
 
-  // Close database connection
   $stmt->close();
   $conn->close();
 }
@@ -62,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
       <button type="submit">Login</button>
     </form>
-    <p class="error-message"><?php echo $message; ?></p> <!-- Display error message -->
+    <p class="error-message"><?php echo $message; ?></p>
   </div>
 </body>
 

@@ -1,5 +1,5 @@
 <?php
-$message = ''; // Initialize the error message
+$message = ''; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   include $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
@@ -13,25 +13,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($password !== $confirmPassword) {
     $message = "Password and Retype Password do not match";
   } else {
-    // Check connection
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
 
-    // Prepare the SQL statement to insert the user's registration information into the admin_account table
     $stmt = $conn->prepare("INSERT INTO admin_account (username, password) VALUES (?, ?)");
     $stmt->bind_param("ss", $username, $password);
 
-    // Execute the prepared statement
     if ($stmt->execute() === FALSE) {
       die("Error registering account: " . $stmt->error);
     }
 
-    // Close the prepared statement
     $stmt->close();
     $conn->close();
 
-    // Redirect to the main page after successful registration
     header("Location: ../directpage.html");
     exit();
   }

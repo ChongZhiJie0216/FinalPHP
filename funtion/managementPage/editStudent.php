@@ -1,11 +1,9 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
 
-// Check if the "stu_id" parameter is present in the URL
 if (isset($_GET['stu_id'])) {
   $stuId = $_GET['stu_id'];
 
-  // Fetch the student data based on the stu_id
   $sql = "SELECT stu_photo, stu_id, stu_age, stu_name, stu_gender, stu_address FROM student WHERE stu_id = ?";
   $stmt = $conn->prepare($sql);
   $stmt->bind_param("s", $stuId);
@@ -23,7 +21,6 @@ if (isset($_GET['stu_id'])) {
     $stuGender = $row['stu_gender'];
     $stuAddress = $row['stu_address'];
 
-    // Display the form to edit student information
     ?>
     <!DOCTYPE html>
     <html>
@@ -149,17 +146,13 @@ if (isset($_GET['stu_id'])) {
     </html>
     <?php
   } else {
-    // No student found with the provided stu_id
     echo "No student found.";
   }
 
-  // Close the prepared statement
   $stmt->close();
 } else {
-  // No stu_id parameter provided in the URL
   echo "Invalid request.";
 }
 
-// Close the database connection
 $conn->close();
 ?>
