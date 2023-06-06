@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // Create the database if it doesn't exist
-$sql = "CREATE DATABASE IF NOT EXISTS $database";
+$sql = "CREATE DATABASE IF NOT EXISTS `$database`";
 if ($conn->query($sql) === FALSE) {
     die("Error creating database: " . $conn->error);
 }
@@ -22,37 +22,36 @@ if ($conn->query($sql) === FALSE) {
 $conn->select_db($database);
 
 // Create the admin_account table if it doesn't exist
-$sql = "CREATE TABLE IF NOT EXISTS admin_account (
-  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(30) NOT NULL,
-  password VARCHAR(30) NOT NULL
+$sql = "CREATE TABLE IF NOT EXISTS `admin_account` (
+  `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(30) NOT NULL,
+  `password` VARCHAR(30) NOT NULL
 )";
 if ($conn->query($sql) === FALSE) {
     die("Error creating admin_account table: " . $conn->error);
 }
 
 // Create the user_account table if it doesn't exist
-$sql = "CREATE TABLE IF NOT EXISTS user_account (
-  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(30) NOT NULL,
-  password VARCHAR(30) NOT NULL
+$sql = "CREATE TABLE IF NOT EXISTS `user_account` (
+  `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(30) NOT NULL,
+  `password` VARCHAR(30) NOT NULL
 )";
 if ($conn->query($sql) === FALSE) {
     die("Error creating user_account table: " . $conn->error);
 }
 
 // Create the student table if it doesn't exist
-  $sql = "CREATE TABLE IF NOT EXISTS student (
-    stu_id INT(20),
-    stu_name VARCHAR(20),
-    stu_age INT,
-    stu_gender VARCHAR(10),
-    stu_address VARCHAR(50),
-    stu_photo VARCHAR(255) -- New column for storing the student picture location
-    PRIMARY KEY (stu_id)
-  )";
+$sql = "CREATE TABLE IF NOT EXISTS `student` (
+  `stu_id` INT(20) PRIMARY KEY,
+  `stu_name` VARCHAR(20),
+  `stu_age` INT,
+  `stu_gender` VARCHAR(10),
+  `stu_address` VARCHAR(255),
+  `stu_photo` VARCHAR(255)
+)";
 if ($conn->query($sql) === FALSE) {
-  die("Error creating user_account table: " . $conn->error);
+    die("Error creating student table: " . $conn->error);
 }
 
 // Save the connection information to a config.php file

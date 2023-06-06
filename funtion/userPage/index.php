@@ -44,6 +44,7 @@
           <th width="100px">姓名</th>
           <th width="100px">性别</th>
           <th width="750px">户籍</th>
+          <th width="100px">操作</th>
         </tr>
         <?php
         include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
@@ -63,11 +64,12 @@
             echo "<td style='text-align: center;'>" . $row['stu_name'] . "</td>";
             echo "<td style='text-align: center;'>" . $row['stu_gender'] . "</td>";
             echo "<td style='text-align: center;'>" . $row['stu_address'] . "</td>";
+            echo "<td style='text-align: center;'><a href='../addStudent/" . $row['stu_photo'] . "' download>Dld Std Pic</a></td>";
             echo "</tr>";
           }
         } else {
           // No rows found
-          echo "<tr><td colspan='6'>No data found.</td></tr>";
+          echo "<tr><td colspan='7'>No data found.</td></tr>";
         }
 
         // Close the database connection

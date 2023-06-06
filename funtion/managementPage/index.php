@@ -15,7 +15,30 @@ function logout()
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
   logout();
 }
+
+// Handle delete request
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete']) && isset($_POST['stu_id'])) {
+  $stu_id = $_POST['stu_id'];
+  
+  // Perform the deletion in the database
+  include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
+  
+  $sql = "DELETE FROM student WHERE stu_id = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("s", $stu_id);
+  $stmt->execute();
+  
+  // Close the database connection
+  $stmt->close();
+  $conn->close();
+  
+  // Redirect back to the same page to refresh the table
+  header("Location: ".$_SERVER['PHP_SELF']);
+  exit();
+}
+
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -49,8 +72,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
   <center>
     <div class="action-buttons">
       <button id="add-student-link" onclick="handleAddStudentClick()">Add Student</button>
-      <button id="modify-student-link" onclick="handleModifyStudentClick()">Modify Student</button>
-      <button id="delete-student-link" onclick="handleDeleteStudentClick()">Delete Student</button>
+    </div>
+  </center>
+  <center>
+    <div id="table-container">
+      <table border="1">
+        <tr>
+          <th width="100px">学生照片</th>
+          <th width="100px">学号</th>
+          <th width="100px">年龄</th>
+          <th width="100px">姓名</th>
+          <th width="100px">性别</th>
+          <th width="750px">户籍</th>
+          <th width="100px">学生照片</th>
+          <th width="100px">编辑</th>
+          <th width="100px">删除</th>
+
+        </tr>
+        <?php
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/Assignment03/config.php';
+
+        // SQL query to fetch student data
+        $sql = "SELECT stu_photo, stu_id, stu_age, stu_name, stu_gender, stu_address FROM student";
+        $result = $conn->query($sql);
+
+        // Check if any rows were returned
+        if ($result->num_rows > 0) {
+          // Loop through each row of data
+          while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td style='text-align: center;'><img src='../addStudent/" . $row['stu_photo'] . "' alt='Student Photo' width='180px' height='196px'></td>";
+            echo "<td style='text-align: center;'>" . $row['stu_id'] . "</td>";
+            echo "<td style='text-align: center;'>" . $row['stu_age'] . "</td>";
+            echo "<td style='text-align: center;'>" . $row['stu_name'] . "</td>";
+            echo "<td style='text-align: center;'>" . $row['stu_gender'] . "</td>";
+            echo "<td style='text-align: center;'>" . $row['stu_address'] . "</td>";
+            echo "<td style='text-align: center;'><a href='../addStudent/" . $row['stu_photo'] . "' download><button type='button'>Download</button></a></td>";
+            echo "<td style='text-align: center;'><a href='editStudent.php?stu_id=" . $row['stu_id'] . "'><button type='button'>Edit</button></a></td>";
+            echo "<td style='text-align: center;'>
+                  <form method='post' onsubmit='return confirm(\"Are you sure you want to delete this student?\");'>
+                    <input type='hidden' name='delete' value='1'>
+                    <input type='hidden' name='stu_id' value='" . $row['stu_id'] . "'>
+                    <button type='submit'>Delete</button>
+                  </form>
+                </td>";
+            echo "</tr>";
+          }
+        } else {
+          // No rows found
+          echo "<tr><td colspan='8'>No data found.</td></tr>";
+        }
+
+        // Close the database connection
+        $conn->close();
+        ?>
+      </table>
     </div>
   </center>
   <script>

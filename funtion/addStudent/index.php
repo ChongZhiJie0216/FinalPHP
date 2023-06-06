@@ -125,11 +125,13 @@
         <label for="stu_photo">Photo:</label>
         <input type="file" id="stu_photo" name="stu_photo">
       </div>
-      <button type="submit">Save</button>
+      <button   type="submit">Save</button>
     </form>
+    <br>
+    <button type=rtn onclick="window.location.href = '../managementPage/index.php';">Return to Management Page</button>
     <p class="record-message"><?php echo $message; ?></p> <!-- Display error message -->
-  </div>
 
+  </div>
 </body>
 
 </html>
