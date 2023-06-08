@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete']) && isset($_
     <br>
     <div class="search-container">
       <input type="text" id="search-input" placeholder="Search...">
-      <button id="search-button">Search</button>
+      <button id="search-button" onclick="handleSearchClick()">Search</button>
     </div>
   </main>
   <br>
@@ -153,6 +153,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete']) && isset($_
 
     function handleAddStudentClick() {
       window.location.href = "../addStudent/index.php";
+    }
+
+    function handleSearchClick() {
+      var searchInput = document.getElementById("search-input").value.toLowerCase();
+      var tableRows = document.getElementsByTagName("tr");
+
+      for (var i = 1; i < tableRows.length; i++) {
+        var cells = tableRows[i].getElementsByTagName("td");
+        var found = false;
+
+        for (var j = 0; j < cells.length; j++) {
+          var cellText = cells[j].textContent || cells[j].innerText;
+
+          if (cellText.toLowerCase().includes(searchInput)) {
+            found = true;
+            break;
+          }
+        }
+
+        if (found) {
+          tableRows[i].style.display = "";
+        } else {
+          tableRows[i].style.display = "none";
+        }
+      }
     }
   </script>
 </body>

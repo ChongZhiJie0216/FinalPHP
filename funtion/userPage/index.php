@@ -59,7 +59,7 @@
             echo "<td style='text-align: center;'>" . $row['stu_name'] . "</td>";
             echo "<td style='text-align: center;'>" . $row['stu_gender'] . "</td>";
             echo "<td style='text-align: center;'>" . $row['stu_address'] . "</td>";
-            echo "<td style='text-align: center;'><a href='../addStudent/" . $row['stu_photo'] . "' download>Dld Std Pic</a></td>";
+            echo "<td style='text-align: center;'><a href='../addStudent/" . $row['stu_photo'] . "' download><button type='button'>Download</button></a></td>";
             echo "</tr>";
           }
         } else {
